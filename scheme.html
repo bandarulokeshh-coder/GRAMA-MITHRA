@@ -1,0 +1,1286 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#1f3b73" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Grama Mitra" />
+    <meta
+      name="description"
+      content="Detailed information about government welfare schemes, eligibility, benefits, and application process."
+    />
+    <title>Scheme Details - Grama Mitra</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:wght@400&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #1e40af;
+        --primary-light: #3b82f6;
+        --primary-dark: #1e3a8a;
+        --accent: #059669;
+        --accent-light: #10b981;
+        --neutral-50: #f9fafb;
+        --neutral-100: #f3f4f6;
+        --neutral-200: #e5e7eb;
+        --neutral-300: #d1d5db;
+        --neutral-600: #4b5563;
+        --neutral-800: #1f2937;
+        --neutral-900: #111827;
+        --error: #dc2626;
+        --success: #059669;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        --radius-sm: 6px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--neutral-50);
+        color: var(--neutral-800);
+        line-height: 1.6;
+      }
+
+      /* Typography */
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "DM Serif Display", serif;
+        font-weight: 400;
+        line-height: 1.2;
+        color: var(--neutral-900);
+      }
+
+      h2 {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      /* Header */
+      header {
+        background: white;
+        box-shadow: var(--shadow-md);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .navbar {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 1.25rem 2.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .logo-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-light)
+        );
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        font-weight: 600;
+      }
+
+      .logo h2 {
+        margin: 0;
+        color: var(--primary);
+        font-size: 1.5rem;
+      }
+
+      .logo small {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--neutral-600);
+        font-weight: 500;
+        letter-spacing: 0.5px;
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      nav ul li {
+        list-style: none;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: var(--neutral-800);
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: color 0.3s ease;
+        position: relative;
+      }
+
+      nav a:hover {
+        color: var(--primary);
+      }
+
+      nav a::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: width 0.3s ease;
+      }
+
+      nav a:hover::after {
+        width: 100%;
+      }
+
+      .auth-buttons {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-md);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-light)
+        );
+        color: white;
+      }
+
+      .btn-primary:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+      }
+
+      .btn-secondary:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      .btn-success {
+        background: var(--accent);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: var(--accent-light);
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-2px);
+      }
+
+      .btn.disabled {
+        background: var(--neutral-300);
+        color: var(--neutral-600);
+        cursor: not-allowed;
+        pointer-events: none;
+        box-shadow: none;
+        transform: none;
+      }
+
+      /* Container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem;
+      }
+
+      #status {
+        text-align: center;
+        padding: 5rem 2rem;
+        font-size: 1.25rem;
+        color: var(--neutral-600);
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+      }
+
+      /* Hero / Detail Header */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          var(--primary-dark) 0%,
+          var(--primary) 100%
+        );
+        color: white;
+        padding: 4rem 2.5rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        margin-bottom: 2.5rem;
+        position: relative;
+        overflow: hidden;
+        display: none;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -100px;
+        right: -100px;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+      }
+
+      .hero h2 {
+        color: white;
+        font-size: 2.75rem;
+        margin-bottom: 1rem;
+      }
+
+      .badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.35rem 1rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        backdrop-filter: blur(4px);
+      }
+
+      .hero p {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2rem;
+      }
+
+      .hero .btn {
+        background: white;
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .hero .btn:hover {
+        background: var(--neutral-100);
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-2px);
+      }
+
+      /* Info Grid */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+        display: none;
+      }
+
+      .card {
+        background: white;
+        padding: 2.5rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        border-top: 4px solid var(--primary);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .card h3 {
+        color: var(--primary);
+        font-size: 1.4rem;
+        margin-bottom: 1.25rem;
+        border-bottom: 2px solid var(--neutral-100);
+        padding-bottom: 0.5rem;
+      }
+
+      .card p {
+        color: var(--neutral-600);
+        font-size: 0.975rem;
+        line-height: 1.7;
+      }
+
+      .card ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .card ul li {
+        position: relative;
+        padding-left: 1.75rem;
+        margin-bottom: 0.75rem;
+        color: var(--neutral-600);
+        font-size: 0.975rem;
+      }
+
+      .card ul li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+        font-weight: 900;
+        font-size: 1.1rem;
+      }
+
+      /* Process Steps */
+      .steps-wrap {
+        background: white;
+        padding: 2.5rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        margin-bottom: 3rem;
+        display: none;
+      }
+
+      .steps-wrap h3 {
+        color: var(--primary);
+        font-size: 1.5rem;
+        margin-bottom: 1.75rem;
+        border-bottom: 2px solid var(--neutral-100);
+        padding-bottom: 0.75rem;
+      }
+
+      #process {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        position: relative;
+        padding-left: 2rem;
+      }
+
+      #process::before {
+        content: "";
+        position: absolute;
+        left: 7px;
+        top: 10px;
+        bottom: 10px;
+        width: 2px;
+        background: var(--neutral-200);
+      }
+
+      #process > div {
+        position: relative;
+        padding-left: 1rem;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--neutral-800);
+      }
+
+      #process > div::before {
+        content: "";
+        position: absolute;
+        left: -2rem;
+        top: 6px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: 3px solid white;
+        box-shadow: 0 0 0 2px var(--accent);
+      }
+
+      /* FAQ accordion */
+      .faq-wrap {
+        background: white;
+        padding: 2.5rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        display: none;
+      }
+
+      .faq-wrap h3 {
+        color: var(--primary);
+        font-size: 1.5rem;
+        margin-bottom: 1.75rem;
+        border-bottom: 2px solid var(--neutral-100);
+        padding-bottom: 0.75rem;
+      }
+
+      .faq-item {
+        border: 1px solid var(--neutral-200);
+        border-radius: var(--radius-md);
+        margin-bottom: 1rem;
+        overflow: hidden;
+        background-color: var(--neutral-50);
+        transition: all 0.3s ease;
+      }
+
+      .faq-item:hover {
+        box-shadow: var(--shadow-sm);
+        border-color: var(--neutral-300);
+      }
+
+      .faq-q {
+        cursor: pointer;
+        padding: 1.25rem 1.5rem;
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--neutral-900);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        user-select: none;
+        transition: background-color 0.3s ease;
+      }
+
+      .faq-q:hover {
+        background-color: var(--neutral-100);
+      }
+
+      .faq-q::after {
+        content: "+";
+        font-size: 1.4rem;
+        color: var(--primary);
+        font-weight: 700;
+        transition: transform 0.3s ease;
+      }
+
+      .faq-item.active .faq-q::after {
+        content: "−";
+      }
+
+      .faq-a {
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.3s cubic-bezier(0, 1, 0, 1),
+          padding 0.3s ease;
+        padding: 0 1.5rem;
+        color: var(--neutral-600);
+        font-size: 0.975rem;
+        line-height: 1.7;
+        background-color: white;
+        border-top: 0px solid transparent;
+      }
+
+      .faq-a.open {
+        max-height: 300px;
+        padding: 1.25rem 1.5rem;
+        border-top: 1px solid var(--neutral-200);
+        transition:
+          max-height 0.3s cubic-bezier(0.9, 0, 0.8, 0.2),
+          padding 0.3s ease;
+      }
+
+      /* Footer */
+      footer {
+        background: var(--neutral-900);
+        color: white;
+        padding: 3rem 2.5rem;
+        margin-top: 5rem;
+      }
+
+      .footer-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      .footer-section h3 {
+        color: white;
+        margin-bottom: 1.25rem;
+        font-size: 1.1rem;
+      }
+
+      .footer-section ul {
+        list-style: none;
+      }
+
+      .footer-section ul li {
+        margin-bottom: 0.75rem;
+      }
+
+      .footer-section a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.3s ease;
+        font-size: 0.95rem;
+      }
+
+      .footer-section a:hover {
+        color: white;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 2rem;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+      }
+    </style>
+    <link rel="stylesheet" href="mobile.css" />
+  </head>
+
+  <body>
+    <div
+      style="background: #059669; color: white; padding: 10px; overflow: hidden"
+    >
+      <marquee>
+        🔔 New PM-KISAN installment released | 🎓 Scholarship applications open
+        | 🏥 Ayushman Bharat enrollment ongoing | 💼 Skill India training
+        registrations active
+      </marquee>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <div class="navbar">
+        <div class="logo">
+          <div class="logo-icon">🏛️</div>
+          <div>
+            <h2>Grama Mitra</h2>
+            <small>Government Schemes Portal</small>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="menu-toggle"
+          id="menuToggle"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="navbarMenu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+
+        <div class="navbar-menu" id="navbarMenu">
+          <nav>
+            <ul>
+              <li><a href="index.html#home" id="navHome">Home</a></li>
+              <li><a href="index.html#schemes" id="navSchemes">Schemes</a></li>
+              <li>
+                <a href="index.html#eligibility" id="navEligibility"
+                  >Eligibility</a
+                >
+              </li>
+              <li><a href="index.html#contact" id="navContact">Contact</a></li>
+            </ul>
+          </nav>
+          <div class="navbar-actions">
+            <button
+              type="button"
+              onclick="toggleLanguage()"
+              class="btn btn-success"
+              id="langBtn"
+            >
+              🌐 తెలుగు
+            </button>
+            <div class="auth-buttons">
+              <a href="#" class="btn btn-secondary">Sign Up</a>
+              <a href="login.html" class="btn btn-primary">Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+    </header>
+
+    <div class="container">
+      <!-- Status / Loading -->
+      <div id="status">Loading scheme details...</div>
+
+      <!-- Scheme Hero -->
+      <div class="hero" id="hero">
+        <div class="hero-content">
+          <span class="badge" id="category"></span>
+          <h2 id="name"></h2>
+          <p id="desc"></p>
+          <a id="apply" class="btn" target="_blank">Apply Now</a>
+        </div>
+      </div>
+
+      <!-- Details Grid -->
+      <div class="grid" id="grid">
+        <div class="card">
+          <h3 id="headEligibility">Eligibility Criteria</h3>
+          <p id="eligibility"></p>
+        </div>
+
+        <div class="card">
+          <h3 id="headBenefits">Scheme Benefits</h3>
+          <p id="benefits"></p>
+        </div>
+
+        <div class="card">
+          <h3 id="headDocuments">Required Documents</h3>
+          <ul id="docs"></ul>
+        </div>
+      </div>
+
+      <!-- Video Tutorial Section -->
+      <div
+        class="video-wrap"
+        id="videoSection"
+        style="
+          display: none;
+          background: white;
+          padding: 2.5rem;
+          border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-md);
+          margin-bottom: 2.5rem;
+        "
+      >
+        <h3
+          id="videoTitle"
+          style="
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--neutral-100);
+            padding-bottom: 0.75rem;
+          "
+        >
+          Video Tutorial
+        </h3>
+        <div
+          class="video-container"
+          style="
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            border-radius: var(--radius-md);
+          "
+        >
+          <iframe
+            id="videoPlayer"
+            style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              border: 0;
+            "
+            src=""
+            allow="
+              accelerometer;
+              autoplay;
+              clipboard-write;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+            "
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+
+      <!-- Process steps -->
+      <div class="steps-wrap" id="steps">
+        <h3 id="headProcess">Application Process</h3>
+        <div id="process"></div>
+      </div>
+
+      <!-- FAQs -->
+      <div class="faq-wrap" id="faq">
+        <h3 id="headFaq">Frequently Asked Questions</h3>
+        <div id="faqBox"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3 id="ftAboutHead">About Grama Mitra</h3>
+          <p
+            id="ftAboutBody"
+            style="
+              color: rgba(255, 255, 255, 0.7);
+              font-size: 0.95rem;
+              line-height: 1.7;
+            "
+          >
+            Grama Mitra is your trusted portal for discovering and accessing
+            government schemes designed to improve citizen welfare and
+            development.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3 id="ftLinksHead">Quick Links</h3>
+          <ul>
+            <li><a href="index.html#home" id="ftHome">Home</a></li>
+            <li><a href="index.html#schemes" id="ftSchemes">Schemes</a></li>
+            <li>
+              <a href="index.html#eligibility" id="ftEligibility"
+                >Eligibility Check</a
+              >
+            </li>
+            <li><a href="index.html#contact" id="ftContact">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3 id="ftSupportHead">Support</h3>
+          <ul>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3 id="ftContactHead">Contact</h3>
+          <ul>
+            <li>
+              <a href="mailto:support@grahamitra.gov">support@grahamitra.gov</a>
+            </li>
+            <li><a href="tel:+91-1800-1234-5678">1800-1234-5678</a></li>
+            <li style="margin-top: 1rem">
+              <a href="#" style="margin-right: 1rem">Twitter</a>
+              <a href="#">Facebook</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p id="ftCopyright">
+          © 2026 Grama Mitra | Government of India | Community Service Project
+        </p>
+      </div>
+    </footer>
+
+    <script src="translate.js"></script>
+    <script>
+      const SUPABASE_URL = "https://yilutowemkpqruaxrxmv.supabase.co";
+      const SUPABASE_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpbHV0b3dlbWtwcXJ1YXhyeG12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0OTAxMjUsImV4cCI6MjA5NjA2NjEyNX0.feB3WKrEnZBegJZTbNMN_xyaZLAHV2JVYxyRxGzjZfs";
+
+      // ── Telugu / English language toggle ────────────────────────────────────
+      let telugu = false;
+      let schemeDataRaw = null; // original English scheme data from DB
+      let schemeDataTe = null; // translated Telugu version (cached)
+
+      async function toggleLanguage() {
+        const langBtn = document.getElementById("langBtn");
+        langBtn.disabled = true;
+
+        if (!telugu) {
+          // ── Switch to Telugu ──────────────────────────────────────────
+          telugu = true;
+          setLanguagePref(true);
+          langBtn.innerHTML = "🌐 English";
+
+          // Static UI labels
+          setText("navHome", "హోమ్");
+          setText("navSchemes", "పథకాలు");
+          setText("navEligibility", "అర్హత");
+          setText("navContact", "సంప్రదించండి");
+          setText("headEligibility", "అర్హత ప్రమాణాలు");
+          setText("headBenefits", "పథక ప్రయోజనాలు");
+          setText("headDocuments", "అవసరమైన పత్రాలు");
+          setText("headProcess", "దరఖాస్తు విధానం");
+          setText("headFaq", "తరచుగా అడిగే ప్రశ్నలు");
+          setText("videoTitle", "వీడియో ట్యుటోరియల్");
+          setText("ftAboutHead", "గ్రామ మిత్ర గురించి");
+          setText(
+            "ftAboutBody",
+            "గ్రామ మిత్ర అనేది పౌర సంక్షేమాన్ని మెరుగుపరిచే ప్రభుత్వ పథకాలను కనుగొనడానికి మీ విశ్వసనీయ పోర్టల్.",
+          );
+          setText("ftLinksHead", "త్వరిత లింకులు");
+          setText("ftHome", "హోమ్");
+          setText("ftSchemes", "పథకాలు");
+          setText("ftEligibility", "అర్హత తనిఖీ");
+          setText("ftContact", "మమ్మల్ని సంప్రదించండి");
+          setText("ftSupportHead", "మద్దతు");
+          setText("ftContactHead", "సంప్రదించండి");
+          setText(
+            "ftCopyright",
+            "© 2026 గ్రామ మిత్ర | భారత ప్రభుత్వం | కమ్యూనిటీ సర్వీస్ ప్రాజెక్ట్",
+          );
+          // Apply button
+          const applyBtn = document.getElementById("apply");
+          if (applyBtn && applyBtn.style.display !== "none")
+            applyBtn.textContent = "ఇప్పుడు దరఖాస్తు చేయండి →";
+
+          // Translate dynamic scheme content
+          if (schemeDataRaw && !schemeDataTe) {
+            langBtn.innerHTML = "⏳ అనువదిస్తోంది...";
+            schemeDataTe = await translateSchemeContent(schemeDataRaw);
+            langBtn.innerHTML = "🌐 English";
+          }
+          if (schemeDataTe) applySchemeData(schemeDataTe);
+        } else {
+          // ── Switch back to English ────────────────────────────────────
+          telugu = false;
+          setLanguagePref(false);
+          langBtn.innerHTML = "🌐 తెలుగు";
+
+          // Restore static UI
+          setText("navHome", "Home");
+          setText("navSchemes", "Schemes");
+          setText("navEligibility", "Eligibility");
+          setText("navContact", "Contact");
+          setText("headEligibility", "Eligibility Criteria");
+          setText("headBenefits", "Scheme Benefits");
+          setText("headDocuments", "Required Documents");
+          setText("headProcess", "Application Process");
+          setText("headFaq", "Frequently Asked Questions");
+          setText("videoTitle", "Video Tutorial");
+          setText("ftAboutHead", "About Grama Mitra");
+          setText(
+            "ftAboutBody",
+            "Grama Mitra is your trusted portal for discovering and accessing government schemes designed to improve citizen welfare and development.",
+          );
+          setText("ftLinksHead", "Quick Links");
+          setText("ftHome", "Home");
+          setText("ftSchemes", "Schemes");
+          setText("ftEligibility", "Eligibility Check");
+          setText("ftContact", "Contact Us");
+          setText("ftSupportHead", "Support");
+          setText("ftContactHead", "Contact");
+          setText(
+            "ftCopyright",
+            "© 2026 Grama Mitra | Government of India | Community Service Project",
+          );
+          const applyBtn = document.getElementById("apply");
+          if (applyBtn && applyBtn.style.display !== "none")
+            applyBtn.textContent = "Apply Now →";
+
+          if (schemeDataRaw) applySchemeData(schemeDataRaw);
+        }
+
+        langBtn.disabled = false;
+      }
+
+      // Safely set textContent of an element by id
+      function setText(id, text) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+      }
+
+      // Translate the dynamic DB fields using translate.js utilities
+      async function translateSchemeContent(s) {
+        const [name, desc, eligibility, benefits, category] = await Promise.all(
+          [
+            translateText(s._name || ""),
+            translateText(s._desc || ""),
+            translateText(s._eligibility || ""),
+            translateText(s._benefits || ""),
+            translateText(s._category || ""),
+          ],
+        );
+
+        const docs = s._docsArr ? await translateStringArray(s._docsArr) : [];
+        const process = s._processArr
+          ? await translateStringArray(s._processArr)
+          : [];
+        const faqs = s._faqsArr ? await translateFaqArray(s._faqsArr) : [];
+
+        return {
+          ...s,
+          _name: name,
+          _desc: desc,
+          _eligibility: eligibility,
+          _benefits: benefits,
+          _category: category,
+          _docsArr: docs,
+          _processArr: process,
+          _faqsArr: faqs,
+        };
+      }
+
+      // Apply a (possibly translated) scheme data object to the DOM
+      function applySchemeData(d) {
+        setText("name", d._name || "");
+        setText("desc", d._desc || "");
+        setText("eligibility", d._eligibility || "");
+        setText("benefits", d._benefits || "");
+        setText("category", d._category || "");
+
+        // Documents list
+        const docsList = document.getElementById("docs");
+        if (docsList) {
+          if (d._docsArr && d._docsArr.length) {
+            docsList.innerHTML = d._docsArr
+              .map((doc) => `<li>${doc}</li>`)
+              .join("");
+          } else {
+            docsList.innerHTML = '<li style="color:#999">Not specified</li>';
+          }
+        }
+
+        // Process steps
+        const processDiv = document.getElementById("process");
+        if (processDiv && d._processArr && d._processArr.length) {
+          processDiv.innerHTML = d._processArr
+            .map((step) => `<div>${step}</div>`)
+            .join("");
+        }
+
+        // FAQs
+        if (d._faqsArr && d._faqsArr.length) {
+          const faqBox = document.getElementById("faqBox");
+          if (faqBox) {
+            faqBox.innerHTML = d._faqsArr
+              .map((faq) => {
+                if (typeof faq === "object" && faq.question) {
+                  return `<div class="faq-item">
+                <div class="faq-q">${faq.question}</div>
+                <div class="faq-a">${faq.answer || ""}</div>
+              </div>`;
+                }
+                return `<div class="faq-item"><div class="faq-q">${faq}</div><div class="faq-a"></div></div>`;
+              })
+              .join("");
+            // Re-attach FAQ click listeners
+            document.querySelectorAll(".faq-q").forEach((q) => {
+              q.addEventListener("click", function () {
+                const item = this.parentElement;
+                item.classList.toggle("active");
+                item.querySelector(".faq-a").classList.toggle("open");
+              });
+            });
+          }
+        }
+      }
+
+      // Helper: pick first truthy value from multiple possible column name variants
+      function pick(obj, ...keys) {
+        for (const k of keys) {
+          if (obj[k] !== undefined && obj[k] !== null && obj[k] !== "")
+            return obj[k];
+        }
+        return null;
+      }
+
+      // Helper: coerce a value to an array (handles JSON string, plain string, or real array)
+      function toArray(val) {
+        if (!val) return [];
+        if (Array.isArray(val)) return val;
+        if (typeof val === "string") {
+          // Try JSON parse first
+          try {
+            const parsed = JSON.parse(val);
+            if (Array.isArray(parsed)) return parsed;
+            return [val]; // single string
+          } catch {
+            // Comma/newline separated plain text
+            return val
+              .split(/[\n,]/)
+              .map((s) => s.trim())
+              .filter(Boolean);
+          }
+        }
+        return [String(val)];
+      }
+
+      // Converts any YouTube URL format to the embeddable iframe URL
+      // Handles: youtu.be/ID, youtube.com/watch?v=ID, youtube.com/shorts/ID, already-embed URLs
+      function toYouTubeEmbed(url) {
+        if (!url) return "";
+        try {
+          const u = new URL(url);
+          let videoId = null;
+
+          if (u.hostname === "youtu.be") {
+            videoId = u.pathname.slice(1);
+          } else if (u.hostname.includes("youtube.com")) {
+            if (u.pathname.startsWith("/embed/")) return url; // already embed format
+            if (u.pathname.startsWith("/shorts/")) {
+              videoId = u.pathname.split("/shorts/")[1];
+            } else {
+              videoId = u.searchParams.get("v");
+            }
+          }
+
+          if (videoId) {
+            return `https://www.youtube.com/embed/${videoId}`;
+          }
+        } catch (e) {
+          /* not a valid URL, return as-is */
+        }
+        return url;
+      }
+
+      async function loadSchemeDetails() {
+        const status = document.getElementById("status");
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const schemeId = params.get("id");
+
+          if (!schemeId) {
+            status.innerHTML =
+              "❌ <strong>No scheme selected.</strong> Please use a URL like: <code>scheme.html?id=1</code>";
+            return;
+          }
+
+          status.textContent = "⏳ Loading scheme details...";
+
+          const res = await fetch(
+            `${SUPABASE_URL}/rest/v1/schemes?id=eq.${schemeId}&select=*`,
+            {
+              headers: {
+                apikey: SUPABASE_KEY,
+                Authorization: `Bearer ${SUPABASE_KEY}`,
+              },
+            },
+          );
+
+          if (!res.ok)
+            throw new Error(`API error: ${res.status} ${res.statusText}`);
+
+          const data = await res.json();
+
+          if (!data || data.length === 0) {
+            status.innerHTML = `❌ Scheme ID <strong>${schemeId}</strong> not found in database.`;
+            return;
+          }
+
+          const s = data[0];
+          // ── Track scheme view for admin dashboard ──
+          try {
+            const views = JSON.parse(
+              localStorage.getItem("gm_scheme_views") || "{}",
+            );
+            views[s.id] = (views[s.id] || 0) + 1;
+            localStorage.setItem("gm_scheme_views", JSON.stringify(views));
+          } catch (e) {}
+
+          console.log("✅ Raw scheme data from DB:", s);
+          console.log("All column names:", Object.keys(s));
+
+          status.style.display = "none";
+
+          // ── Build structured data object (used by applySchemeData + translation) ──
+          const applyUrl = pick(
+            s,
+            "official_link",
+            "apply_link",
+            "apply_url",
+            "application_link",
+            "application_url",
+            "link",
+            "url",
+            "portal_link",
+            "website",
+          );
+          const rawDocs = pick(
+            s,
+            "documents",
+            "required_docs",
+            "required_documents",
+            "docs",
+          );
+          const rawProcess = pick(
+            s,
+            "process",
+            "application_process",
+            "steps",
+            "how_to_apply",
+          );
+          const rawFaqs = pick(
+            s,
+            "faqs",
+            "faq",
+            "frequently_asked",
+            "questions",
+          );
+
+          schemeDataRaw = {
+            _name: pick(s, "name", "title", "scheme_name") || "Untitled Scheme",
+            _desc:
+              pick(
+                s,
+                "description",
+                "short_description",
+                "summary",
+                "details",
+              ) || "",
+            _eligibility:
+              pick(
+                s,
+                "eligibility",
+                "eligibility_criteria",
+                "who_can_apply",
+                "criteria",
+              ) || "Not specified",
+            _benefits:
+              pick(
+                s,
+                "benefits",
+                "scheme_benefits",
+                "benefit",
+                "amount",
+                "assistance",
+              ) || "Not specified",
+            _category: pick(s, "category", "type", "scheme_type") || "Scheme",
+            _docsArr: toArray(rawDocs),
+            _processArr: toArray(rawProcess),
+            _faqsArr: toArray(rawFaqs),
+            _applyUrl: applyUrl,
+            _videoUrl: pick(
+              s,
+              "tutorial_link",
+              "video_url",
+              "youtube_link",
+              "video_link",
+              "tutorial_url",
+            ),
+          };
+
+          // Apply button href (language-independent)
+          const applyBtn = document.getElementById("apply");
+          if (applyUrl) {
+            applyBtn.href = applyUrl;
+            applyBtn.target = "_blank";
+            applyBtn.rel = "noopener noreferrer";
+          } else {
+            applyBtn.style.display = "none";
+          }
+
+          // Show/hide sections based on data presence
+          document.getElementById("hero").style.display = "block";
+          document.getElementById("grid").style.display = "grid";
+          if (schemeDataRaw._processArr.length)
+            document.getElementById("steps").style.display = "block";
+          if (schemeDataRaw._faqsArr.length)
+            document.getElementById("faq").style.display = "block";
+          if (schemeDataRaw._videoUrl) {
+            document.getElementById("videoPlayer").src = toYouTubeEmbed(
+              schemeDataRaw._videoUrl,
+            );
+            document.getElementById("videoSection").style.display = "block";
+          }
+
+          // Populate English content and restore FAQ listeners
+          applySchemeData(schemeDataRaw);
+
+          // If user had Telugu set from a previous page, auto-switch now
+          if (isTeluguPref() && !telugu) {
+            await toggleLanguage();
+          }
+        } catch (error) {
+          console.error("❌ Error loading scheme:", error);
+          status.innerHTML = `<strong>Error:</strong> ${error.message}<br><small>Open DevTools (F12) → Console for details.</small>`;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", loadSchemeDetails);
+    </script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((reg) => console.log("SW registered:", reg.scope))
+            .catch((err) => console.warn("SW registration failed:", err));
+        });
+      }
+    </script>
+    <!-- Offline status banner -->
+    <div
+      id="offlineBanner"
+      style="
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #1f3b73;
+        color: white;
+        text-align: center;
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        z-index: 9999;
+        box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.3);
+      "
+    >
+      📶 You are offline — showing cached content
+    </div>
+    <script>
+      function updateOnlineStatus() {
+        document.getElementById("offlineBanner").style.display =
+          navigator.onLine ? "none" : "block";
+      }
+      window.addEventListener("online", updateOnlineStatus);
+      window.addEventListener("offline", updateOnlineStatus);
+      updateOnlineStatus();
+    </script>
+    <script src="mobile-nav.js"></script>
+  </body>
+</html>

@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#1f3b73" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Grama Mitra" />
+    <title>Check Eligibility - Grama Mitra</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", "Arial", sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      header {
+        background: linear-gradient(135deg, #1f3b73 0%, #2d5a8c 100%);
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      h2 {
+        color: #1f3b73;
+        margin-bottom: 25px;
+        font-size: 1.8rem;
+        border-bottom: 3px solid #667eea;
+        padding-bottom: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: #333;
+        font-size: 1.05rem;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .button-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+      }
+
+      button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 14px 30px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1.05rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        flex: 1;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      button.secondary {
+        background: #f0f0f0;
+        color: #333;
+      }
+
+      button.secondary:hover {
+        background: #e0e0e0;
+        box-shadow: none;
+      }
+
+      .result {
+        margin-top: 40px;
+        display: none;
+      }
+
+      .result.active {
+        display: block;
+        animation: slideIn 0.5s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .result h3 {
+        color: #1f3b73;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+      .schemes-list {
+        list-style: none;
+      }
+
+      .scheme-item {
+        background: #f8f9fa;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-left: 5px solid #667eea;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .scheme-item:hover {
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        transform: translateX(5px);
+      }
+
+      .scheme-item h4 {
+        color: #1f3b73;
+        margin-bottom: 8px;
+      }
+
+      .scheme-item p {
+        color: #666;
+        margin-bottom: 10px;
+        line-height: 1.6;
+      }
+
+      .scheme-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      .scheme-link:hover {
+        color: #764ba2;
+        text-decoration: underline;
+      }
+
+      .no-result {
+        background: #fff3cd;
+        border: 2px solid #ffc107;
+        padding: 20px;
+        border-radius: 10px;
+        color: #856404;
+        text-align: center;
+        font-size: 1.05rem;
+      }
+
+      /* ── Nearby Offices Section ── */
+      #nearbySection {
+        display: none;
+        margin-top: 48px;
+        animation: slideIn 0.5s ease;
+      }
+
+      #nearbySection.active {
+        display: block;
+      }
+
+      .nearby-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 3px solid #667eea;
+      }
+
+      .nearby-header h2 {
+        margin: 0;
+        border: none;
+        padding: 0;
+        font-size: 1.6rem;
+      }
+
+      .nearby-controls {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+      }
+
+      .nearby-controls input {
+        flex: 1;
+        min-width: 200px;
+        padding: 12px 16px;
+      }
+
+      .nearby-controls select {
+        flex: 1;
+        min-width: 180px;
+        padding: 12px 16px;
+      }
+
+      .nearby-controls button {
+        flex: 0 0 auto;
+        padding: 12px 24px;
+        font-size: 0.95rem;
+      }
+
+      .locate-btn {
+        background: linear-gradient(135deg, #059669, #10b981) !important;
+      }
+
+      .locate-btn:hover {
+        box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4) !important;
+      }
+
+      #mapStatus {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 10px;
+        min-height: 20px;
+      }
+
+      #mapStatus.error {
+        color: #dc2626;
+      }
+
+      #mapStatus.success {
+        color: #059669;
+      }
+
+      #mapContainer {
+        width: 100%;
+        height: 420px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        display: none;
+        overflow: hidden;
+      }
+
+      #mapContainer.active {
+        display: block;
+      }
+
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+
+      .office-type-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .chip {
+        background: #f0f0f0;
+        border: 2px solid transparent;
+        border-radius: 20px;
+        padding: 6px 14px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #444;
+      }
+
+      .chip:hover {
+        border-color: #667eea;
+        color: #667eea;
+      }
+
+      .chip.active {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border-color: transparent;
+      }
+
+      .nearby-tip {
+        background: #e8f4fd;
+        border-left: 4px solid #3b82f6;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 0.88rem;
+        color: #1e3a8a;
+        margin-top: 14px;
+      }
+
+      .back-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+        opacity: 0.9;
+      }
+
+      .back-home:hover {
+        opacity: 1;
+        text-decoration: underline;
+      }
+    </style>
+    <link rel="stylesheet" href="mobile.css" />
+  </head>
+
+  <body class="eligibility-page">
+    <header>
+      <a href="index.html" class="back-home">← Back to home</a>
+      <h1>🎯 Check Your Eligibility</h1>
+      <p>Find Government Schemes Perfect for Your Profile</p>
+    </header>
+
+    <div class="container">
+      <!-- Diagnostic bar -->
+      <div
+        id="diagnosticBox"
+        style="
+          display: none;
+          background: #e8f4fd;
+          border: 1px solid #3b82f6;
+          border-radius: 8px;
+          padding: 12px 16px;
+          margin-bottom: 20px;
+          font-size: 0.92rem;
+          color: #1e3a8a;
+        "
+      ></div>
+
+      <h2>Check Your Eligibility</h2>
+
+      <div class="form-group">
+        <label>🎓 Occupation/Category</label>
+        <select id="occupation">
+          <option value="">Loading categories...</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>💰 Annual Income (₹)</label>
+        <input
+          type="number"
+          id="income"
+          placeholder="Enter your annual income"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>🎂 Age</label>
+        <input type="number" id="age" placeholder="Enter your age" />
+      </div>
+
+      <div class="button-group">
+        <button onclick="checkEligibility()">🔍 Check Eligibility</button>
+        <button class="secondary" onclick="resetForm()">↻ Clear Form</button>
+      </div>
+
+      <!-- Schemes result -->
+      <div id="result" class="result"></div>
+
+      <!-- ── Nearby Offices Map (shown after results) ── -->
+      <div id="nearbySection">
+        <div class="nearby-header">
+          <span style="font-size: 1.8rem">📍</span>
+          <h2>Find Nearby Offices</h2>
+        </div>
+        <p style="color: #555; margin-bottom: 18px">
+          Locate government offices, banks, or service centres near you to apply
+          for these schemes in person.
+        </p>
+
+        <!-- Quick-pick chips -->
+        <div class="office-type-chips">
+          <span
+            class="chip active"
+            data-query="government office"
+            onclick="selectChip(this)"
+            >🏛️ Government Office</span
+          >
+          <span
+            class="chip"
+            data-query="tahsildar office"
+            onclick="selectChip(this)"
+            >📋 Tahsildar</span
+          >
+          <span
+            class="chip"
+            data-query="revenue divisional office"
+            onclick="selectChip(this)"
+            >🗂️ RDO / Collector</span
+          >
+          <span
+            class="chip"
+            data-query="common service centre CSC"
+            onclick="selectChip(this)"
+            >💻 CSC Centre</span
+          >
+          <span
+            class="chip"
+            data-query="State Bank of India"
+            onclick="selectChip(this)"
+            >🏦 SBI Bank</span
+          >
+          <span class="chip" data-query="post office" onclick="selectChip(this)"
+            >📮 Post Office</span
+          >
+          <span
+            class="chip"
+            data-query="district hospital"
+            onclick="selectChip(this)"
+            >🏥 District Hospital</span
+          >
+          <span
+            class="chip"
+            data-query="Aadhaar centre"
+            onclick="selectChip(this)"
+            >🪪 Aadhaar Centre</span
+          >
+        </div>
+
+        <!-- Search bar -->
+        <div class="nearby-controls">
+          <input
+            type="text"
+            id="officeSearch"
+            placeholder="Or type any office type (e.g. Mandal Parishad, DRDA...)"
+          />
+          <button class="locate-btn" onclick="findNearby()">
+            📍 Find Near Me
+          </button>
+          <button class="secondary" onclick="findByCity()">
+            🔎 Search by City
+          </button>
+        </div>
+
+        <input
+          type="text"
+          id="cityInput"
+          placeholder="Enter city / village name (e.g. Warangal, Nalgonda...)"
+          style="display: none; margin-bottom: 12px; padding: 12px 16px"
+        />
+
+        <div id="mapStatus"></div>
+        <div id="mapContainer"><div id="map"></div></div>
+
+        <div class="nearby-tip">
+          💡 <strong>Tip:</strong> Click "Find Near Me" to use your device
+          location, or type a city name and click "Search by City". Use the
+          chips above to quickly switch office types.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const SUPABASE_URL = "https://yilutowemkpqruaxrxmv.supabase.co";
+      const SUPABASE_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpbHV0b3dlbWtwcXJ1YXhyeG12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0OTAxMjUsImV4cCI6MjA5NjA2NjEyNX0.feB3WKrEnZBegJZTbNMN_xyaZLAHV2JVYxyRxGzjZfs";
+
+      const CATEGORY_LABELS = {
+        agriculture: "👨‍🌾 Farmer / Agriculture",
+        farmer: "👨‍🌾 Farmer",
+        education: "👨‍🎓 Student / Education",
+        student: "👨‍🎓 Student",
+        labor: "👷 Worker / Labor",
+        labour: "👷 Worker / Labour",
+        worker: "👷 Worker",
+        women_welfare: "👩 Women Welfare",
+        women: "👩 Women",
+        woman: "👩 Woman",
+        social_security: "👴 Senior Citizen / Social Security",
+        senior: "👴 Senior Citizen",
+        employment: "💼 Employment / Unemployed",
+        unemployed: "💼 Unemployed",
+        health: "🏥 Health",
+        housing: "🏠 Housing",
+      };
+
+      const headers = {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+      };
+
+      // ── Supabase helpers ──────────────────────────────────────────
+
+      async function loadCategories() {
+        const select = document.getElementById("occupation");
+        try {
+          const res = await fetch(
+            `${SUPABASE_URL}/rest/v1/schemes?select=category`,
+            { headers },
+          );
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const rows = await res.json();
+          const cats = [
+            ...new Set(rows.map((r) => r.category).filter(Boolean)),
+          ].sort();
+
+          if (cats.length === 0) {
+            showDiagnostic(
+              "⚠️ The <code>schemes</code> table returned rows but all have a null/empty <code>category</code> column.",
+            );
+            return;
+          }
+
+          select.innerHTML = '<option value="">Select a category...</option>';
+          cats.forEach((cat) => {
+            const opt = document.createElement("option");
+            opt.value = cat;
+            opt.textContent = CATEGORY_LABELS[cat] || cat;
+            select.appendChild(opt);
+          });
+
+          showDiagnostic(
+            `✅ Found <strong>${cats.length}</strong> categories in DB: <code>${cats.join(", ")}</code>`,
+          );
+        } catch (err) {
+          showDiagnostic(`❌ Could not reach database: ${err.message}`);
+        }
+      }
+
+      function showDiagnostic(msg) {
+        const box = document.getElementById("diagnosticBox");
+        if (box) {
+          box.innerHTML = msg;
+          box.style.display = "block";
+        }
+      }
+
+      async function fetchSchemesFromSupabase(category) {
+        try {
+          const url = `${SUPABASE_URL}/rest/v1/schemes?category=eq.${encodeURIComponent(category)}&select=id,name,description`;
+          const res = await fetch(url, { headers });
+          if (!res.ok) {
+            const err = await res.text();
+            showDiagnostic(`❌ API error ${res.status}: ${err}`);
+            return [];
+          }
+          return (await res.json()) || [];
+        } catch (error) {
+          showDiagnostic(`❌ Fetch error: ${error.message}`);
+          return [];
+        }
+      }
+
+      async function checkEligibility() {
+        const occupation = document.getElementById("occupation").value;
+        const resultDiv = document.getElementById("result");
+
+        if (!occupation) {
+          resultDiv.innerHTML =
+            '<div class="no-result">⚠️ Please select a category.</div>';
+          resultDiv.classList.add("active");
+          return;
+        }
+
+        resultDiv.innerHTML =
+          '<div class="no-result">⏳ Loading schemes...</div>';
+        resultDiv.classList.add("active");
+
+        const schemes = await fetchSchemesFromSupabase(occupation);
+
+        if (schemes.length === 0) {
+          resultDiv.innerHTML = `<div class="no-result">No schemes found for category "<strong>${occupation}</strong>" in the database.<br><small>Check the diagnostic bar above — does this category actually have rows?</small></div>`;
+          // Still show the map section so user can look for offices
+          showNearbySection();
+          return;
+        }
+
+        let html = `<h3>✅ Available Schemes for You (${schemes.length} found)</h3><ul class="schemes-list">`;
+        schemes.forEach((scheme) => {
+          html += `
+                    <li class="scheme-item">
+                        <h4>${scheme.name}</h4>
+                        <p>${scheme.description || "No description available"}</p>
+                        <a href="scheme.html?id=${scheme.id}" class="scheme-link">View Details →</a>
+                    </li>
+                `;
+        });
+        html += "</ul>";
+        resultDiv.innerHTML = html;
+
+        // Show map section after results
+        showNearbySection();
+      }
+
+      function resetForm() {
+        document.getElementById("age").value = "";
+        document.getElementById("occupation").value = "";
+        document.getElementById("income").value = "";
+        document.getElementById("result").classList.remove("active");
+        document.getElementById("nearbySection").classList.remove("active");
+        document.getElementById("mapContainer").classList.remove("active");
+        document.getElementById("mapStatus").textContent = "";
+        document.getElementById("cityInput").style.display = "none";
+        clearMarkers();
+      }
+
+      // ── Nearby Offices Map (OpenStreetMap + Leaflet + Overpass) ──
+
+      let activeChipQuery = "government office";
+      let leafletMap = null;
+      let markersLayer = null;
+
+      // Maps chip queries to Overpass amenity/office tags
+      const OVERPASS_TAGS = {
+        "government office": [
+          ["amenity", "townhall"],
+          ["office", "government"],
+        ],
+        "tahsildar office": [
+          ["office", "government"],
+          ["amenity", "townhall"],
+        ],
+        "revenue divisional office": [
+          ["office", "government"],
+          ["amenity", "townhall"],
+        ],
+        "common service centre CSC": [
+          ["amenity", "internet_cafe"],
+          ["office", "government"],
+        ],
+        "State Bank of India": [["amenity", "bank"]],
+        "post office": [["amenity", "post_office"]],
+        "district hospital": [["amenity", "hospital"]],
+        "Aadhaar centre": [
+          ["office", "government"],
+          ["amenity", "townhall"],
+        ],
+      };
+
+      function showNearbySection() {
+        const section = document.getElementById("nearbySection");
+        section.classList.add("active");
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function selectChip(el) {
+        document
+          .querySelectorAll(".chip")
+          .forEach((c) => c.classList.remove("active"));
+        el.classList.add("active");
+        activeChipQuery = el.dataset.query;
+        document.getElementById("officeSearch").value = "";
+      }
+
+      function getSearchQuery() {
+        return (
+          document.getElementById("officeSearch").value.trim() ||
+          activeChipQuery
+        );
+      }
+
+      function setMapStatus(msg, type = "") {
+        const el = document.getElementById("mapStatus");
+        el.textContent = msg;
+        el.className = type;
+      }
+
+      function initMap(lat, lng) {
+        const container = document.getElementById("mapContainer");
+        container.classList.add("active");
+
+        if (leafletMap) {
+          leafletMap.setView([lat, lng], 14);
+        } else {
+          leafletMap = L.map("map").setView([lat, lng], 14);
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution:
+              '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19,
+          }).addTo(leafletMap);
+          markersLayer = L.layerGroup().addTo(leafletMap);
+        }
+      }
+
+      function clearMarkers() {
+        if (markersLayer) markersLayer.clearLayers();
+      }
+
+      // Build Overpass QL query for a bounding box around lat/lng
+      function buildOverpassQuery(lat, lng, radiusMeters, query) {
+        const tags = OVERPASS_TAGS[query];
+        const filters = tags
+          ? tags
+              .map(
+                ([k, v]) =>
+                  `node["${k}"="${v}"](around:${radiusMeters},${lat},${lng});way["${k}"="${v}"](around:${radiusMeters},${lat},${lng});`,
+              )
+              .join("")
+          : `node["name"~"${query}",i](around:${radiusMeters},${lat},${lng});way["name"~"${query}",i](around:${radiusMeters},${lat},${lng});`;
+        return `[out:json][timeout:20];(${filters});out center 30;`;
+      }
+
+      async function fetchPlaces(lat, lng, query) {
+        const overpassUrl = "https://overpass-api.de/api/interpreter";
+        const ql = buildOverpassQuery(lat, lng, 5000, query);
+        const res = await fetch(overpassUrl, {
+          method: "POST",
+          body: ql,
+        });
+        if (!res.ok) throw new Error(`Overpass API error: ${res.status}`);
+        const data = await res.json();
+        return data.elements || [];
+      }
+
+      function placeMarkers(elements, lat, lng, query) {
+        clearMarkers();
+
+        // Add blue dot for user location
+        L.circleMarker([lat, lng], {
+          radius: 9,
+          color: "#1e40af",
+          fillColor: "#3b82f6",
+          fillOpacity: 0.9,
+          weight: 2,
+        })
+          .bindPopup("<strong>📍 Your Location</strong>")
+          .addTo(markersLayer);
+
+        if (elements.length === 0) {
+          setMapStatus(
+            `⚠️ No "${query}" found within 5 km. Try a different office type or search by city.`,
+            "error",
+          );
+          return;
+        }
+
+        elements.forEach((el) => {
+          const elLat = el.lat ?? el.center?.lat;
+          const elLng = el.lon ?? el.center?.lon;
+          if (!elLat || !elLng) return;
+
+          const name = el.tags?.name || el.tags?.["name:en"] || query;
+          const addr =
+            [el.tags?.["addr:street"], el.tags?.["addr:city"]]
+              .filter(Boolean)
+              .join(", ") || "Address not listed";
+          const phone = el.tags?.phone || el.tags?.contact_phone || "";
+          const opening = el.tags?.opening_hours || "";
+
+          const popup = `
+                    <strong>${name}</strong><br>
+                    <small style="color:#555">${addr}</small>
+                    ${phone ? `<br>📞 ${phone}` : ""}
+                    ${opening ? `<br>🕐 ${opening}` : ""}
+                    <br><a href="https://www.openstreetmap.org/?mlat=${elLat}&mlon=${elLng}#map=17/${elLat}/${elLng}"
+                       target="_blank" rel="noopener" style="color:#667eea; font-weight:600; font-size:0.85rem;">
+                       Open in Maps →</a>
+                `;
+          L.marker([elLat, elLng]).bindPopup(popup).addTo(markersLayer);
+        });
+
+        setMapStatus(
+          `✅ Found ${elements.length} "${query}" location(s) within 5 km. Click a pin for details.`,
+          "success",
+        );
+      }
+
+      async function findNearby() {
+        const query = getSearchQuery();
+        setMapStatus("📡 Getting your location...");
+
+        if (!navigator.geolocation) {
+          setMapStatus(
+            "❌ Geolocation not supported. Try searching by city instead.",
+            "error",
+          );
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          async (pos) => {
+            const { latitude: lat, longitude: lng } = pos.coords;
+            setMapStatus(`🔎 Searching for "${query}" nearby...`);
+            initMap(lat, lng);
+            try {
+              const places = await fetchPlaces(lat, lng, query);
+              placeMarkers(places, lat, lng, query);
+            } catch (err) {
+              setMapStatus(`❌ Search failed: ${err.message}`, "error");
+            }
+          },
+          (err) => {
+            const msgs = {
+              1: "Location permission denied. Allow access or search by city.",
+              2: "Location unavailable. Try searching by city.",
+              3: "Location request timed out. Try again.",
+            };
+            setMapStatus(`❌ ${msgs[err.code] || err.message}`, "error");
+          },
+          { timeout: 10000 },
+        );
+      }
+
+      function findByCity() {
+        const cityInput = document.getElementById("cityInput");
+        if (cityInput.style.display === "none") {
+          cityInput.style.display = "block";
+          cityInput.focus();
+          cityInput.onkeydown = (e) => {
+            if (e.key === "Enter") searchCity();
+          };
+          return;
+        }
+        searchCity();
+      }
+
+      async function searchCity() {
+        const city = document.getElementById("cityInput").value.trim();
+        const query = getSearchQuery();
+        if (!city) {
+          setMapStatus("⚠️ Please enter a city or village name.", "error");
+          return;
+        }
+        setMapStatus(`🔎 Looking up "${city}"...`);
+
+        // Geocode city using Nominatim (free, no key needed)
+        try {
+          const geo = await fetch(
+            `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1`,
+            { headers: { "Accept-Language": "en" } },
+          );
+          const geoData = await geo.json();
+          if (!geoData.length) {
+            setMapStatus(
+              `❌ Could not find "${city}". Check the spelling and try again.`,
+              "error",
+            );
+            return;
+          }
+          const lat = parseFloat(geoData[0].lat);
+          const lng = parseFloat(geoData[0].lon);
+          setMapStatus(`🔎 Searching for "${query}" in ${city}...`);
+          initMap(lat, lng);
+          const places = await fetchPlaces(lat, lng, query);
+          placeMarkers(places, lat, lng, query);
+        } catch (err) {
+          setMapStatus(`❌ Error: ${err.message}`, "error");
+        }
+      }
+
+      loadCategories();
+    </script>
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((reg) => console.log("SW registered:", reg.scope))
+            .catch((err) => console.warn("SW registration failed:", err));
+        });
+      }
+    </script>
+    <!-- Offline status banner -->
+    <div
+      id="offlineBanner"
+      style="
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #1f3b73;
+        color: white;
+        text-align: center;
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        z-index: 9999;
+        box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.3);
+      "
+    >
+      📶 You are offline — showing cached content
+    </div>
+    <script>
+      function updateOnlineStatus() {
+        document.getElementById("offlineBanner").style.display =
+          navigator.onLine ? "none" : "block";
+      }
+      window.addEventListener("online", updateOnlineStatus);
+      window.addEventListener("offline", updateOnlineStatus);
+      updateOnlineStatus();
+    </script>
+  </body>
+</html>
